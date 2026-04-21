@@ -1,0 +1,48 @@
+{
+  "name": "browser-rendering-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Cloudflare Browser Rendering — agent-controllable browser sessions with raw CDP access",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "browser-rendering-mcp": "index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "assets/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node index.mjs",
+    "smoke": "node smoke-test.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "browser-rendering",
+    "cloudflare",
+    "cdp",
+    "devtools-protocol",
+    "ai-agent",
+    "playwright",
+    "puppeteer"
+  ],
+  "author": "jonnyparris",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonnyparris/browser-rendering-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonnyparris/browser-rendering-mcp/issues"
+  },
+  "homepage": "https://github.com/jonnyparris/browser-rendering-mcp#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  }
+}
