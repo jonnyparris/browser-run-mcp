@@ -1,239 +1,218 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" width="880" height="480" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace">
   <defs>
-    <!-- Dark theme gradients -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    <!-- Terminal window background -->
+    <linearGradient id="termBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#010409"/>
     </linearGradient>
     
-    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#334155;stop-opacity:1" />
+    <!-- Node gradients -->
+    <linearGradient id="nodeBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0d1117"/>
     </linearGradient>
     
-    <linearGradient id="proxyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1e3a5f;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0f2744;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="brGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#451a03;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#78350f;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="siteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#064e3b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#065f46;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="closeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7f1d1d;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#991b1b;stop-opacity:1" />
+    <linearGradient id="nodeBgHero" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c2333"/>
+      <stop offset="100%" stop-color="#0d1420"/>
     </linearGradient>
 
-    <!-- Glow filters -->
-    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <!-- Flow line gradients -->
+    <linearGradient id="flowDown" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#58a6ff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0.1"/>
+    </linearGradient>
     
-    <filter id="glowAmber" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <filter id="glowGreen" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <filter id="glowRed" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <linearGradient id="flowClose" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f85149" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#f85149" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#f85149" stop-opacity="0.1"/>
+    </linearGradient>
+
+    <!-- Glow -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
 
     <!-- Arrow markers -->
-    <marker id="arrowBlue" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-      <polygon points="0 0, 12 4, 0 8" fill="#60a5fa"/>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 L3,5 Z" fill="#58a6ff"/>
     </marker>
-    <marker id="arrowAmber" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-      <polygon points="0 0, 12 4, 0 8" fill="#fbbf24"/>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 L3,5 Z" fill="#f85149"/>
     </marker>
-    <marker id="arrowGreen" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-      <polygon points="0 0, 12 4, 0 8" fill="#34d399"/>
-    </marker>
-    <marker id="arrowRed" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-      <polygon points="0 0, 12 4, 0 8" fill="#f87171"/>
-    </marker>
-
-    <!-- Box shadow -->
-    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3"/>
-    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="900" height="600" fill="url(#bgGrad)" rx="16"/>
-  
-  <!-- Subtle grid pattern -->
-  <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.3"/>
-    </pattern>
-  </defs>
-  <rect width="900" height="600" fill="url(#grid)" rx="16"/>
+  <!-- Terminal window shell -->
+  <rect width="880" height="480" rx="12" fill="url(#termBg)"/>
+  <rect width="880" height="480" rx="12" fill="none" stroke="#30363d" stroke-width="1"/>
 
-  <!-- Title area -->
-  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="26" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">Browser Rendering MCP</text>
-  <text x="450" y="72" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#94a3b8" font-weight="400">Agent-controllable browser sessions on Cloudflare's edge</text>
-
-  <!-- === MAIN FLOW (center column) === -->
+  <!-- Title bar -->
+  <rect width="880" height="40" rx="12" fill="#161b22"/>
+  <rect y="28" width="880" height="12" fill="#161b22"/>
+  <line x1="0" y1="40" x2="880" y2="40" stroke="#30363d" stroke-width="1"/>
   
-  <!-- Step 1: AI Agent -->
-  <g filter="url(#shadow)">
-    <rect x="300" y="100" width="300" height="80" rx="14" fill="url(#agentGrad)" stroke="#475569" stroke-width="1.5"/>
-    <!-- Icon -->
-    <rect x="325" y="118" width="44" height="44" rx="10" fill="#334155" stroke="#64748b" stroke-width="1"/>
-    <text x="347" y="148" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22">🤖</text>
-    <text x="385" y="142" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#f1f5f9">AI Agent / MCP Client</text>
-    <text x="385" y="162" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8">Claude, OpenCode, Cursor, etc.</text>
+  <!-- Traffic lights -->
+  <circle cx="22" cy="20" r="6" fill="#ff5f57"/>
+  <circle cx="42" cy="20" r="6" fill="#febc2e"/>
+  <circle cx="62" cy="20" r="6" fill="#28c840"/>
+  
+  <!-- Title in title bar -->
+  <text x="440" y="25" text-anchor="middle" font-size="12" fill="#7d8590" font-weight="500">browser-rendering-mcp — architecture</text>
+
+  <!-- === MAIN DIAGRAM === -->
+  
+  <!-- Column markers at top -->
+  <text x="180" y="72" font-size="10" fill="#6e7681" font-weight="600" letter-spacing="1.5">CLIENT</text>
+  <text x="420" y="72" font-size="10" fill="#58a6ff" font-weight="600" letter-spacing="1.5">PROXY</text>
+  <text x="700" y="72" font-size="10" fill="#6e7681" font-weight="600" letter-spacing="1.5">CLOUD</text>
+
+  <!-- === AGENT (left) === -->
+  <g>
+    <rect x="60" y="90" width="240" height="90" rx="8" fill="url(#nodeBg)" stroke="#30363d" stroke-width="1"/>
+    <!-- Prompt indicator -->
+    <text x="78" y="118" font-size="13" fill="#58a6ff" font-weight="700">$</text>
+    <text x="94" y="118" font-size="13" fill="#c9d1d9" font-weight="600">ai_agent</text>
+    <text x="78" y="142" font-size="11" fill="#6e7681">Claude · OpenCode · Cursor</text>
+    
+    <!-- Status -->
+    <g>
+      <circle cx="84" cy="162" r="3" fill="#3fb950">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="94" y="166" font-size="10" fill="#8b949e">sending tool call</text>
+    </g>
   </g>
 
-  <!-- Arrow: Agent → Proxy -->
-  <line x1="450" y1="180" x2="450" y2="210" stroke="#60a5fa" stroke-width="2" opacity="0.6" marker-end="url(#arrowBlue)"/>
+  <!-- Connection line: agent → proxy -->
+  <line x1="300" y1="135" x2="360" y2="135" stroke="url(#flowDown)" stroke-width="2" marker-end="url(#arrow)" transform="rotate(0)"/>
 
-  <!-- Step 2: MCP Proxy (highlighted - the hero) -->
-  <g filter="url(#shadow)">
-    <rect x="280" y="210" width="340" height="100" rx="14" fill="url(#proxyGrad)" stroke="#3b82f6" stroke-width="2.5"/>
-    <!-- Glow effect around border -->
-    <rect x="280" y="210" width="340" height="100" rx="14" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.4">
-      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+  <!-- === MCP PROXY (center, hero) === -->
+  <g>
+    <!-- Glowing border effect -->
+    <rect x="358" y="88" width="244" height="264" rx="8" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
     </rect>
-    <!-- Icon -->
-    <rect x="305" y="228" width="44" height="44" rx="10" fill="#1e40af" stroke="#60a5fa" stroke-width="1"/>
-    <text x="327" y="258" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22">⚡</text>
-    <text x="365" y="252" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#bfdbfe">browser-rendering-mcp</text>
-    <text x="365" y="272" font-family="system-ui, sans-serif" font-size="12" fill="#93c5fd">Code-mode proxy • Raw CDP • ~1k tokens</text>
-    <text x="365" y="290" font-family="system-ui, sans-serif" font-size="11" fill="#60a5fa">Session persists • Short keep_alive (30s)</text>
+    
+    <rect x="360" y="90" width="240" height="260" rx="8" fill="url(#nodeBgHero)" stroke="#388bfd" stroke-width="1.5"/>
+    
+    <!-- Header bar -->
+    <rect x="360" y="90" width="240" height="32" rx="8" fill="#1f2937"/>
+    <rect x="360" y="114" width="240" height="8" fill="#1f2937"/>
+    
+    <text x="378" y="111" font-size="12" fill="#58a6ff" font-weight="700">⚡ browser-rendering-mcp</text>
+    <text x="582" y="111" text-anchor="end" font-size="10" fill="#6e7681">v1.0</text>
+
+    <!-- Code block inside -->
+    <g transform="translate(378, 140)">
+      <text font-size="11" fill="#6e7681">// 2 tools exposed</text>
+      <text y="20" font-size="11" fill="#d2a8ff">br_browser</text>
+      <text x="80" y="20" font-size="11" fill="#7d8590">(code)</text>
+      <text y="38" font-size="11" fill="#d2a8ff">close_br_browser</text>
+      <text x="120" y="38" font-size="11" fill="#7d8590">()</text>
+    </g>
+    
+    <!-- Features list -->
+    <g transform="translate(378, 200)">
+      <text font-size="10" fill="#8b949e">▸ raw CDP over WebSocket</text>
+      <text y="18" font-size="10" fill="#8b949e">▸ code-mode execution</text>
+      <text y="36" font-size="10" fill="#8b949e">▸ session persists across calls</text>
+      <text y="54" font-size="10" fill="#8b949e">▸ keep_alive = 30s (vs 10min)</text>
+    </g>
+
+    <!-- Bottom stats -->
+    <line x1="378" y1="308" x2="582" y2="308" stroke="#30363d" stroke-width="1"/>
+    <text x="378" y="328" font-size="10" fill="#6e7681">TOKENS</text>
+    <text x="378" y="342" font-size="13" fill="#3fb950" font-weight="700">~1k</text>
+    <text x="478" y="328" font-size="10" fill="#6e7681">TOOLS</text>
+    <text x="478" y="342" font-size="13" fill="#3fb950" font-weight="700">2</text>
   </g>
 
-  <!-- Arrow: Proxy → BR -->
-  <line x1="450" y1="310" x2="450" y2="340" stroke="#fbbf24" stroke-width="2" opacity="0.6" marker-end="url(#arrowAmber)"/>
+  <!-- Connection line: proxy → BR -->
+  <line x1="600" y1="220" x2="660" y2="220" stroke="url(#flowDown)" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!-- Step 3: Cloudflare Browser Rendering -->
-  <g filter="url(#shadow)">
-    <rect x="300" y="340" width="300" height="80" rx="14" fill="url(#brGrad)" stroke="#d97706" stroke-width="1.5"/>
-    <!-- Icon -->
-    <rect x="325" y="358" width="44" height="44" rx="10" fill="#78350f" stroke="#fbbf24" stroke-width="1"/>
-    <text x="347" y="388" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22">🌐</text>
-    <text x="385" y="382" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#fef3c7">Cloudflare Browser Rendering</text>
-    <text x="385" y="402" font-family="system-ui, sans-serif" font-size="12" fill="#fbbf24">CDP endpoint • Managed browser on the edge</text>
+  <!-- === CLOUDFLARE BR (right) === -->
+  <g>
+    <rect x="660" y="90" width="180" height="260" rx="8" fill="url(#nodeBg)" stroke="#30363d" stroke-width="1"/>
+    
+    <!-- Cloudflare orange accent -->
+    <rect x="660" y="90" width="4" height="260" rx="2" fill="#f38020"/>
+    
+    <text x="680" y="118" font-size="13" fill="#c9d1d9" font-weight="700">Cloudflare</text>
+    <text x="680" y="136" font-size="13" fill="#f38020" font-weight="700">Browser Rendering</text>
+    
+    <line x1="680" y1="150" x2="820" y2="150" stroke="#30363d" stroke-width="1"/>
+    
+    <text x="680" y="172" font-size="10" fill="#6e7681">ENDPOINT</text>
+    <text x="680" y="188" font-size="10" fill="#8b949e">wss://api.cloudflare</text>
+    <text x="680" y="202" font-size="10" fill="#8b949e">.com/.../devtools</text>
+    
+    <text x="680" y="230" font-size="10" fill="#6e7681">PROTOCOL</text>
+    <text x="680" y="246" font-size="11" fill="#c9d1d9" font-weight="600">Chrome DevTools</text>
+    <text x="680" y="260" font-size="11" fill="#c9d1d9" font-weight="600">Protocol (CDP)</text>
+    
+    <text x="680" y="288" font-size="10" fill="#6e7681">LOCATION</text>
+    <text x="680" y="304" font-size="11" fill="#c9d1d9" font-weight="600">Edge network</text>
+    
+    <!-- Activity indicator -->
+    <g transform="translate(680, 325)">
+      <circle cx="4" cy="0" r="3" fill="#f38020">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="14" y="4" font-size="10" fill="#8b949e">session active</text>
+    </g>
   </g>
 
-  <!-- Arrow: BR → Site -->
-  <line x1="450" y1="420" x2="450" y2="450" stroke="#34d399" stroke-width="2" opacity="0.6" marker-end="url(#arrowGreen)"/>
-
-  <!-- Step 4: Target Website -->
-  <g filter="url(#shadow)">
-    <rect x="300" y="450" width="300" height="80" rx="14" fill="url(#siteGrad)" stroke="#059669" stroke-width="1.5"/>
-    <!-- Icon -->
-    <rect x="325" y="468" width="44" height="44" rx="10" fill="#065f46" stroke="#34d399" stroke-width="1"/>
-    <text x="347" y="498" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22">🎯</text>
-    <text x="385" y="492" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#d1fae5">Target Website</text>
-    <text x="385" y="512" font-family="system-ui, sans-serif" font-size="12" fill="#6ee7b7">Any URL • Scraping • Screenshots • Automation</text>
-  </g>
-
-  <!-- === ANIMATED DATA PACKETS === -->
-  <!-- Blue packet: Agent → Proxy -->
-  <circle r="5" fill="#60a5fa" filter="url(#glowBlue)">
-    <animate attributeName="cy" values="180;210" dur="1.2s" repeatCount="indefinite" begin="0s"/>
-    <animate attributeName="opacity" values="1;1;0" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+  <!-- === ANIMATED PACKETS (left to right main flow) === -->
+  
+  <!-- Agent → Proxy packet -->
+  <circle r="3" fill="#58a6ff" filter="url(#softGlow)" cy="135">
+    <animate attributeName="cx" values="300;360" dur="1s" repeatCount="indefinite" begin="0s"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1s" repeatCount="indefinite" begin="0s"/>
   </circle>
   
-  <!-- Amber packet: Proxy → BR -->
-  <circle r="5" fill="#fbbf24" filter="url(#glowAmber)">
-    <animate attributeName="cy" values="310;340" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
-    <animate attributeName="opacity" values="1;1;0" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
+  <!-- Proxy → BR packet -->
+  <circle r="3" fill="#58a6ff" filter="url(#softGlow)" cy="220">
+    <animate attributeName="cx" values="600;660" dur="1s" repeatCount="indefinite" begin="0.5s"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1s" repeatCount="indefinite" begin="0.5s"/>
   </circle>
+
+  <!-- === CLOSE FLOW (bottom dashed, the key differentiator) === -->
+  <g>
+    <!-- Label above the close path -->
+    <rect x="360" y="380" width="300" height="26" rx="4" fill="#1f1012" stroke="#f85149" stroke-width="1"/>
+    <text x="378" y="397" font-size="11" fill="#f85149" font-weight="700">▸ browser.close()</text>
+    <text x="470" y="397" font-size="11" fill="#f0883e">→ CDP Browser.close</text>
+    <text x="652" y="397" text-anchor="end" font-size="10" fill="#7d8590">instant teardown</text>
+  </g>
+
+  <!-- Dashed close arrow: proxy → BR at bottom -->
+  <path d="M 480 406 L 480 430 L 750 430 L 750 350" stroke="#f85149" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrowRed)" opacity="0.8"/>
   
-  <!-- Green packet: BR → Site -->
-  <circle r="5" fill="#34d399" filter="url(#glowGreen)">
-    <animate attributeName="cy" values="420;450" dur="1.2s" repeatCount="indefinite" begin="0.8s"/>
-    <animate attributeName="opacity" values="1;1;0" dur="1.2s" repeatCount="indefinite" begin="0.8s"/>
+  <!-- Close packet -->
+  <circle r="4" fill="#f85149" filter="url(#softGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1s" path="M 480 406 L 480 430 L 750 430 L 750 350"/>
+    <animate attributeName="opacity" values="0;1;1;1;0" dur="2.5s" repeatCount="indefinite" begin="1s"/>
   </circle>
 
-  <!-- === CLOSE FLOW (the killer feature) === -->
+  <!-- === BOTTOM STATUS BAR === -->
   <g>
-    <!-- Red arrow: Proxy → BR (Browser.close) -->
-    <line x1="620" y1="260" x2="620" y2="380" stroke="#f87171" stroke-width="2.5" stroke-dasharray="8,5" marker-end="url(#arrowRed)" opacity="0.9"/>
+    <rect y="450" width="880" height="30" fill="#161b22"/>
+    <line x1="0" y1="450" x2="880" y2="450" stroke="#30363d" stroke-width="1"/>
     
-    <!-- Pulsing close packet -->
-    <circle cx="620" r="6" fill="#ef4444" filter="url(#glowRed)">
-      <animate attributeName="cy" values="260;380" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-      <animate attributeName="r" values="4;7;4" dur="2.5s" repeatCount="indefinite" begin="1s"/>
-    </circle>
-
-    <!-- Close label badge -->
-    <rect x="635" y="310" width="130" height="32" rx="8" fill="#7f1d1d" stroke="#f87171" stroke-width="1.5" opacity="0.95">
-      <animate attributeName="opacity" values="0.95;1;0.95" dur="2s" repeatCount="indefinite"/>
-    </rect>
-    <text x="700" y="331" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fca5a5">browser.close()</text>
+    <!-- Left side: status -->
+    <circle cx="22" cy="465" r="4" fill="#3fb950"/>
+    <text x="32" y="469" font-size="11" fill="#8b949e">connected</text>
     
-    <!-- Feature tag -->
-    <rect x="635" y="350" width="130" height="22" rx="6" fill="#450a0a" stroke="#7f1d1d" stroke-width="1"/>
-    <text x="700" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#f87171" font-weight="600">Immediate teardown</text>
-  </g>
-
-  <!-- === SIDE PANEL: Comparison === -->
-  <g>
-    <!-- Panel background -->
-    <rect x="40" y="210" width="210" height="200" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1" opacity="0.8"/>
-    
-    <!-- Header -->
-    <text x="145" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#94a3b8">vs chrome-devtools-mcp</text>
-    
-    <!-- Divider -->
-    <line x1="55" y1="245" x2="235" y2="245" stroke="#334155" stroke-width="1"/>
-    
-    <!-- chrome-devtools-mcp (old way) -->
-    <text x="55" y="268" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#f87171">chrome-devtools-mcp</text>
-    <text x="55" y="285" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">• 29 tools (~7k tokens)</text>
-    <text x="55" y="302" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">• No explicit close</text>
-    <text x="55" y="319" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">• 10 min idle timeout</text>
-    
-    <!-- Divider -->
-    <line x1="55" y1="332" x2="235" y2="332" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
-    
-    <!-- This proxy (new way) -->
-    <text x="55" y="355" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#34d399">browser-rendering-mcp</text>
-    <text x="55" y="372" font-family="system-ui, sans-serif" font-size="11" fill="#e2e8f0">• 2 tools (~1k tokens)</text>
-    <text x="55" y="389" font-family="system-ui, sans-serif" font-size="11" fill="#e2e8f0">• Explicit browser.close()</text>
-    <text x="55" y="406" font-family="system-ui, sans-serif" font-size="11" fill="#e2e8f0">• 30 sec idle timeout</text>
-  </g>
-
-  <!-- === BOTTOM METRICS BAR === -->
-  <g>
-    <rect x="300" y="555" width="300" height="36" rx="18" fill="#1e293b" stroke="#475569" stroke-width="1"/>
-    
-    <text x="350" y="577" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">
-      <tspan fill="#60a5fa" font-weight="700">Raw CDP</tspan>
-      <tspan> • </tspan>
-      <tspan fill="#fbbf24" font-weight="700">~85% fewer tokens</tspan>
-      <tspan> • </tspan>
-      <tspan fill="#34d399" font-weight="700">Agent-controlled</tspan>
+    <!-- Center: comparison stat -->
+    <text x="440" y="469" text-anchor="middle" font-size="11" fill="#7d8590">
+      <tspan fill="#f85149">chrome-devtools-mcp</tspan>
+      <tspan fill="#6e7681"> 29 tools · 7k tokens · 10min idle</tspan>
+      <tspan fill="#3fb950">  →  </tspan>
+      <tspan fill="#58a6ff">this</tspan>
+      <tspan fill="#6e7681"> 2 tools · 1k tokens · 30s idle</tspan>
     </text>
   </g>
 </svg>
