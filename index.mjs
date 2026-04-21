@@ -1,40 +1,41 @@
 #!/usr/bin/env node
 
 /**
- * Browser Rendering MCP Server
+ * Browser Run MCP Server
  *
- * A local MCP server that speaks raw CDP to Cloudflare Browser Rendering and
- * exposes a single code-mode `br_browser` tool to the agent.
+ * A local MCP server that speaks raw CDP to Cloudflare Browser Run and
+ * exposes a code-mode `browser_run` tool to the agent.
  *
  * Why this instead of chrome-devtools-mcp with --wsEndpoint?
  *
  *   1. Agent can explicitly end a session. `browser.close()` sends the
- *      CDP `Browser.close` command, which Cloudflare's BR backend treats as a
- *      teardown signal. No more waiting out keep_alive after a one-shot task.
+ *      CDP `Browser.close` command, which Cloudflare's Browser Run backend
+ *      treats as a teardown signal. No more waiting out keep_alive after a
+ *      one-shot task.
  *
  *   2. Hybrid session model. A session is created lazily on first call, kept
  *      across calls so pages and cookies persist for multi-step workflows,
  *      and uses a short keep_alive (30s) so forgotten sessions do not idle
  *      for 10 minutes.
  *
- *   3. Raw CDP. No Puppeteer, no Playwright. Direct WebSocket to the BR CDP
- *      endpoint, JSON-RPC messages, so the agent's code can call anything in
- *      the CDP protocol.
+ *   3. Raw CDP. No Puppeteer, no Playwright. Direct WebSocket to the Browser
+ *      Run CDP endpoint, JSON-RPC messages, so the agent's code can call
+ *      anything in the CDP protocol.
  *
  *   4. Token-efficient. One tool (~1k tokens in the MCP handshake) instead of
  *      chrome-devtools-mcp's 29 tools (~7k tokens).
  *
  * Usage:
  *
- *   CF_ACCOUNT_ID=xxx CF_API_TOKEN=yyy npx browser-rendering-mcp
+ *   CF_ACCOUNT_ID=xxx CF_API_TOKEN=yyy node index.mjs
  *
  * Or wire it into an MCP client config, e.g. Claude Desktop:
  *
  *   {
  *     "mcpServers": {
- *       "browser-rendering": {
- *         "command": "npx",
- *         "args": ["browser-rendering-mcp"],
+ *       "browser-run": {
+ *         "command": "node",
+ *         "args": ["/absolute/path/to/browser-run-mcp/index.mjs"],
  *         "env": {
  *           "CF_ACCOUNT_ID": "...",
  *           "CF_API_TOKEN": "..."
@@ -42,6 +43,11 @@
  *       }
  *     }
  *   }
+ *
+ * Note: the Cloudflare API path still uses the legacy "browser-rendering"
+ * segment (`/accounts/{id}/browser-rendering/devtools/browser`). The product
+ * was renamed to "Browser Run" but the API path remains unchanged for
+ * backwards compatibility.
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -56,15 +62,22 @@ import WebSocket from "ws";
 const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
 const CF_API_TOKEN = process.env.CF_API_TOKEN;
 
-const KEEP_ALIVE_MS = Number(process.env.BR_KEEP_ALIVE_MS ?? 30_000);
+// Env vars: prefer BROWSER_RUN_* names, fall back to legacy BR_* for
+// backwards compatibility.
+const KEEP_ALIVE_MS = Number(
+  process.env.BROWSER_RUN_KEEP_ALIVE_MS ??
+    process.env.BR_KEEP_ALIVE_MS ??
+    30_000,
+);
 
 const CDP_BASE_URL =
+  process.env.BROWSER_RUN_CDP_URL ??
   process.env.BR_CDP_URL ??
   `wss://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/browser-rendering/devtools/browser`;
 
 if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
   console.error(
-    "browser-rendering-mcp: CF_ACCOUNT_ID and CF_API_TOKEN env vars are required",
+    "browser-run-mcp: CF_ACCOUNT_ID and CF_API_TOKEN env vars are required",
   );
   process.exit(1);
 }
@@ -164,7 +177,7 @@ class CDPClient {
       await this.send("Browser.close").catch(() => {});
     } finally {
       try {
-        this.#ws.close(1000, "browser-rendering-mcp: close");
+        this.#ws.close(1000, "browser-run-mcp: close");
       } catch {}
       this.#ws = null;
       this.#defaultSessionId = null;
@@ -407,9 +420,9 @@ async function executeCode(code) {
 // MCP server
 // ---------------------------------------------------------------------------
 
-const TOOL_DESCRIPTION = `Control a Cloudflare Browser Rendering session. Write an async JS arrow function that receives a \`browser\` object.
+const TOOL_DESCRIPTION = `Control a Cloudflare Browser Run session. Write an async JS arrow function that receives a \`browser\` object.
 
-The BR session is created lazily on the first call and persists across calls, so cookies and page state survive between invocations. Always call \`browser.close()\` when you are done — otherwise the session idles until the keep_alive timeout (30s by default) expires.
+The Browser Run session is created lazily on the first call and persists across calls, so cookies and page state survive between invocations. Always call \`browser.close()\` when you are done — otherwise the session idles until the keep_alive timeout (30s by default) expires.
 
 ## Methods
 
@@ -447,12 +460,12 @@ async (browser) => {
 
 async function main() {
   const server = new McpServer({
-    name: "browser-rendering-mcp",
+    name: "browser-run-mcp",
     version: "1.0.0",
   });
 
   server.tool(
-    "br_browser",
+    "browser_run",
     TOOL_DESCRIPTION,
     {
       code: z
@@ -482,8 +495,8 @@ async function main() {
   );
 
   server.tool(
-    "close_br_browser",
-    "Immediately tear down the current Browser Rendering session by sending CDP Browser.close. Safe to call if no session is open.",
+    "close_browser_run",
+    "Immediately tear down the current Browser Run session by sending CDP Browser.close. Safe to call if no session is open.",
     {},
     async () => {
       await cdp.close();

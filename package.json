@@ -1,14 +1,15 @@
 {
-  "name": "browser-rendering-mcp",
+  "name": "browser-run-mcp",
   "version": "1.0.0",
-  "description": "MCP server for Cloudflare Browser Rendering — agent-controllable browser sessions with raw CDP access",
+  "description": "MCP server for Cloudflare Browser Run — agent-controllable browser sessions with raw CDP access",
   "type": "module",
   "main": "index.mjs",
   "bin": {
-    "browser-rendering-mcp": "index.mjs"
+    "browser-run-mcp": "index.mjs"
   },
   "files": [
     "index.mjs",
+    "smoke-test.mjs",
     "assets/",
     "README.md",
     "LICENSE"
@@ -19,6 +20,7 @@
   },
   "keywords": [
     "mcp",
+    "browser-run",
     "browser-rendering",
     "cloudflare",
     "cdp",
@@ -31,12 +33,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonnyparris/browser-rendering-mcp.git"
+    "url": "git+https://github.com/jonnyparris/browser-run-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/jonnyparris/browser-rendering-mcp/issues"
+    "url": "https://github.com/jonnyparris/browser-run-mcp/issues"
   },
-  "homepage": "https://github.com/jonnyparris/browser-rendering-mcp#readme",
+  "homepage": "https://github.com/jonnyparris/browser-run-mcp#readme",
   "engines": {
     "node": ">=20"
   },
