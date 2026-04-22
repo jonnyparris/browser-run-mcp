@@ -325,10 +325,24 @@ function createBrowserAPI() {
       return this.evaluate("document.documentElement.outerHTML");
     },
 
-    async screenshot({ format = "png", quality, fullPage = false } = {}) {
+    /**
+     * Take a screenshot. Defaults to JPEG quality 75.
+     *
+     * Why not PNG? When this MCP is consumed by an LLM agent, screenshot size
+     * matters. PNG is lossless and uncompressed — a full-page PNG of a typical
+     * 1280px-wide page is often 3-7MB. Two thresholds bite:
+     *   - MCP pipelines often save images >=2MB to disk and return only a
+     *     path, so the model never sees the image.
+     *   - Claude's API rejects inline images >=5MB (base64), permanently
+     *     ending the session.
+     * JPEG q75 is typically 90%+ smaller with no perceptible quality loss for
+     * page inspection. Pass { format: "png" } or use screenshotPng() when you
+     * actually need lossless output (small viewports, pixel-diffing).
+     */
+    async screenshot({ format = "jpeg", quality, fullPage = false } = {}) {
       const sessionId = await cdp.ensurePageSession();
       const params = { format };
-      if (quality != null && format === "jpeg") params.quality = quality;
+      if (format === "jpeg") params.quality = quality ?? 75;
       if (fullPage) params.captureBeyondViewport = true;
       const { data } = await cdp.send(
         "Page.captureScreenshot",
@@ -336,6 +350,11 @@ function createBrowserAPI() {
         { sessionId },
       );
       return { format, base64: data };
+    },
+
+    /** Explicit lossless PNG opt-in. See screenshot() docstring for risks. */
+    async screenshotPng({ fullPage = false } = {}) {
+      return this.screenshot({ format: "png", fullPage });
     },
 
     async click(selector, { button = "left", clickCount = 1 } = {}) {
@@ -427,13 +446,14 @@ The Browser Run session is created lazily on the first call and persists across 
 ## Methods
 
 ### Navigation
-browser.navigate(url, { waitUntil? = 'load' | 'domcontentloaded', timeoutMs? })
+browser.navigate(url, { waitUntil? = 'load' | 'domcontentloaded', timeoutMs? }) — timeoutMs defaults to 30000
 browser.reload({ ignoreCache? })
 
 ### Inspection
 browser.evaluate(expression, { returnByValue?, awaitPromise? }) — run JS in the page
 browser.title() / browser.url() / browser.content()
-browser.screenshot({ format? = 'png' | 'jpeg', quality?, fullPage? })
+browser.screenshot({ format? = 'jpeg' | 'png', quality?, fullPage? }) — defaults to JPEG q75. Screenshots >=2MB are often silently saved to disk by MCP clients; >=5MB base64 is rejected by Claude's API and permanently kills the session. Pass format:'png' only for small viewports.
+browser.screenshotPng({ fullPage? }) — explicit lossless PNG opt-in.
 
 ### Input
 browser.click(selector, { button?, clickCount? })

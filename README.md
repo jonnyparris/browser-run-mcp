@@ -137,7 +137,8 @@ The `browser` object API:
 | `reload({ ignoreCache? })` | Reload the current page. |
 | `evaluate(expression, { returnByValue?, awaitPromise? })` | Run JS in the page. |
 | `title()` / `url()` / `content()` | Get page metadata. |
-| `screenshot({ format?, quality?, fullPage? })` | Capture screenshot. Returns `{ format, base64 }`. |
+| `screenshot({ format?, quality?, fullPage? })` | Capture screenshot. Defaults to `format: 'jpeg'`, `quality: 75` — see [Screenshot safety](#screenshot-safety) below. Returns `{ format, base64 }`. |
+| `screenshotPng({ fullPage? })` | Explicit lossless PNG opt-in. See [Screenshot safety](#screenshot-safety). |
 | `click(selector, { button?, clickCount? })` | Click via CSS selector. |
 | `type(text, { delay? })` | Type text into the focused element. |
 | `close()` | **Send CDP `Browser.close`, end the Browser Run session immediately.** |
@@ -149,6 +150,31 @@ The `browser` object API:
 ### `close_browser_run`
 
 A top-level escape hatch. If the agent loses track of state and cannot invoke `browser.close()` inside code, calling this tool directly tears the session down. Safe to call if no session is open.
+
+## Screenshot safety
+
+When this MCP is consumed by an LLM agent, screenshot size matters a lot. `screenshot()` defaults to **JPEG quality 75** because:
+
+- PNG is lossless and uncompressed. A full-page PNG of a typical 1280px page is routinely **3–7 MB**.
+- Many MCP clients (including Claude Desktop) silently save images **≥ 2 MB** to disk and hand the model only a file path. The model never sees the image.
+- Claude's API rejects inline base64 content **≥ 5 MB** with a hard error. If this happens inside an agent loop, **the session is permanently unrecoverable** — compaction doesn't save you because it replays the same attachments.
+
+JPEG at quality 75 is typically 90%+ smaller than the equivalent PNG with no perceptible difference for page inspection.
+
+```js
+// Safe default
+await browser.screenshot();                            // JPEG q75
+await browser.screenshot({ fullPage: true });          // JPEG q75, full page
+
+// Override quality if JPEG q75 still exceeds 2 MB
+await browser.screenshot({ quality: 50 });
+
+// Explicit opt-in to PNG (small viewports only)
+await browser.screenshotPng();
+await browser.screenshot({ format: "png" });
+```
+
+Credit to [zeke/faster-chrome-devtools-skill](https://github.com/zeke/faster-chrome-devtools-skill) for documenting this failure mode.
 
 ## Session lifecycle
 
