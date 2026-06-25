@@ -193,6 +193,7 @@ Agent forgets to close → Idle timeout (30s default)               → Auto-cle
 | `CF_API_TOKEN` | **required** | Token with **Browser Rendering – Edit** permission. |
 | `BROWSER_RUN_KEEP_ALIVE_MS` | `30000` | Idle timeout. Shorter = less waste if the agent forgets to close. (Legacy: `BR_KEEP_ALIVE_MS`.) |
 | `BROWSER_RUN_CDP_URL` | `wss://api.cloudflare.com/client/v4/accounts/{id}/browser-rendering/devtools/browser` | Override for staging or custom CDP proxies. (Legacy: `BR_CDP_URL`.) |
+| `BROWSER_RUN_LAB` | `true` | Appends `&lab=true` to select Browser Run's beta Chrome pool, which exposes beta features such as WebMCP (`navigator.modelContextTesting`). Set `false` to pin the stable pool. |
 
 ## Comparison
 

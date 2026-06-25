@@ -75,6 +75,14 @@ const CDP_BASE_URL =
   process.env.BR_CDP_URL ??
   `wss://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/browser-rendering/devtools/browser`;
 
+// `lab=true` selects Browser Run's experimental Chrome beta pool, which exposes
+// beta browser features including WebMCP (navigator.modelContextTesting).
+// Defaults on; set BROWSER_RUN_LAB=false to pin the stable pool (e.g. for
+// production-like stability over beta feature access).
+const LAB_ENABLED = !/^(0|false|no|off)$/i.test(
+  process.env.BROWSER_RUN_LAB ?? "true",
+);
+
 if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
   console.error(
     "browser-run-mcp: CF_ACCOUNT_ID and CF_API_TOKEN env vars are required",
@@ -102,7 +110,9 @@ class CDPClient {
   async connect() {
     if (this.connected) return;
 
-    const url = `${CDP_BASE_URL}?keep_alive=${KEEP_ALIVE_MS}`;
+    const url = `${CDP_BASE_URL}?keep_alive=${KEEP_ALIVE_MS}${
+      LAB_ENABLED ? "&lab=true" : ""
+    }`;
     const ws = new WebSocket(url, {
       headers: { Authorization: `Bearer ${CF_API_TOKEN}` },
     });
